@@ -13,7 +13,7 @@
 - name: PostgreSQL | Extensions | Use specific version from repo | apt
   set_fact:
     repmgr_apt_name: "postgresql-{{ postgresql_version }}-repmgr={{ repmgr_version_debian }}"
-  when: 
+  when:
     - ansible_os_family == "Debian"
     - repmgr_version_debian is defined
 
@@ -22,6 +22,7 @@
     name: "{{ repmgr_apt_name | default ('postgresql-' + postgresql_version|string + '-repmgr' ) }}"
     state: present
     update_cache: yes
+    force: True
     cache_valid_time: "{{ apt_cache_valid_time | default (3600) }}"
   when: ansible_pkg_mgr == "apt"
   notify: restart postgresql
